@@ -1,0 +1,56 @@
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "/usr/local/rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+##
+# Your previous /Users/ismo1/.bash_profile file was backed up as /Users/ismo1/.bash_profile.macports-saved_2013-03-31_at_17:32:10
+##
+
+# MacPorts Installer addition on 2013-03-31_at_17:32:10: adding an appropriate PATH variable for use with MacPorts.
+export PATH=/opt/local/bin:/opt/local/sbin:/Developement/adt-bundle-mac-x86_64/sdk/platform-tools:/Developement/adt-bundle-mac-x86_64/sdk/tools:/Developement/adt-bundle-mac-x86_64/sdk/tools/android:/Developement/adt-bundle-mac-x86_64/sdk/tools/lib:$PATH
+
+
+# Finished adapting your PATH environment variable for use with MacPorts.
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
+
+export CLICOLOR=1
+export LSCOLORS=GxFxCxDxBxegedabagaced
+export PGHOST=localhost
+export DISPLAY=:0
+if [ -f ~/.bashrc ]; then
+source ~/.bashrc
+fi
+
+##
+# Your previous /Users/ismo1/.bash_profile file was backed up as /Users/ismo1/.bash_profile.macports-saved_2014-01-01_at_19:30:49
+##
+
+# MacPorts Installer addition on 2014-01-01_at_19:30:49: adding an appropriate PATH variable for use with MacPorts.
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+# Finished adapting your PATH environment variable for use with MacPorts.
+
+#ln -s mate ~/bin/mate_wait   # run this once to create the link
+#export EDITOR='mate_wait'    # use in your ~/.bash_profile
+
+
+function parse_git_branch () {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+  
+  RED="\[\033[0;31m\]"
+  YELLOW="\[\033[0;33m\]"
+  GREEN="\[\033[0;32m\]"
+  NO_COLOR="\[\033[0m\]"
+  
+PS1="$GREEN\u@\h$NO_COLOR:\w$YELLOW\$(parse_git_branch)$NO_COLOR\$ "
+
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+fi
+
+#alias u = "unicorn -c config/unicorn.rb"
+
+export PATH=/usr/local/bin:$PATH
+export JAVA_HOME=$(/usr/libexec/java_home)
+

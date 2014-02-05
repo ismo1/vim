@@ -1,0 +1,134 @@
+"set term=builtin_ansi
+syntax on
+set tabstop=2 shiftwidth=2 expandtab
+colorscheme Tomorrow-Night
+
+" Some settings to enable the theme:
+set number        " Show line numbers
+syntax enable     " Use syntax highlighting
+set background=dark
+set cursorline
+
+
+"autocompletion
+let g:neocomplcache_enable_at_startup = 1
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType ruby compiler ruby
+
+autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1 
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+
+noremap <up> <nop>
+noremap <right> <nop>
+noremap <left> <nop>
+noremap <down> <nop>
+
+"macro
+let @j = 'j.'
+let @f = ';.'
+let @n = 'n.'
+
+
+set nocompatible      " We're running Vim, not Vi!
+syntax on             " Enable syntax highlighting
+filetype on           " Enable filetype detection
+filetype indent on    " Enable filetype-specific indenting
+filetype plugin on    " Enable filetype-specific plugins
+"
+
+"let g:solarized_termcolors = 256  " New line!!
+"colorscheme solarized
+
+""useful shurcuts
+"command -nargs=? -complete=shellcmd W  :w | :call ScreenShellSend("load '".@%."';")
+"map <Leader>c :ScreenShellVertical bundle exec rails c<CR>
+"map <Leader>r :w<CR> :call ScreenShellSend("rspec ".@% . ':' . line('.'))<CR>
+"map <Leader>e :w<CR> :call ScreenShellSend("cucumber --format=pretty ".@% . ':' . line('.'))<CR>
+"map <Leader>b :w<CR> :call ScreenShellSend("break ".@% . ':' . line('.'))<CR>
+
+"
+""Cursor color
+"function! InsertStatuslineColor(mode)
+"  if a:mode == 'i'
+"    hi statusline guibg=magenta
+"  elseif a:mode == 'r'
+"    hi statusline guibg=blue
+"  else
+"    hi statusline guibg=red
+"  endif
+"endfunction
+"
+"au InsertEnter * call InsertStatuslineolor(v:insertmode)
+"au InsertChange * call InsertStatuslineColor(v:insertmode)
+"au InsertLeave * hi statusline guibg=green
+"
+"" first, enable status line always
+"set laststatus=2
+"" now set it up to change the status line based on mode
+"if version >= 700
+"  au InsertEnter * hi StatusLine term=reverse ctermbg=5 gui=undercurl guisp=Magenta
+"  au InsertLeave * hi StatusLine term=reverse ctermfg=0 ctermbg=2 gui=bold,reverse
+"endif
+
+"coffeescript
+"autocmd BufWritePost,FileWritePost *.coffee :silent !coffee -bcp <afile>
+"autocmd BufWritePost,FileWritePost *.coffee !coffee <afile>
+":map ,t :w\|:!mocha --compilers coffee:coffee-script %<cr>
+
+let coffee_compile_vert = 1
+let coffee_watch_vert = 1
+"let coffee_run_vert = 1
+
+:map ,r :w\|:CoffeeWatch\|:CoffeeRun
+
+autocmd BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
+autocmd BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab
+
+"is necessary for comment line or block to work fine
+filetype plugin on
+
+"automatically remove trailing whitespace before write
+autocmd BufWritePre  *.{cpp,java,h,c,py,sh,rb,js,coffee,json,haml,html,yml}  call StripTrailingWhite()
+
+function! StripTrailingWhite()
+  let l:winview = winsaveview()
+  silent! %s/\s\+$//
+  call winrestview(l:winview)
+endfunction
+
+"Swhoing trailing spaces
+function! ShowSpaces()
+  match ErrorMsg '\s\+$'
+endfunction
+
+nnoremap <Leader>rts :call ShowSpaces()<CR>
+
+" Press F4 to toggle highlighting on/off, and show current value.
+:noremap <F3> :set hlsearch! hlsearch?<CR>
+
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+
+Bundle 'junegunn/seoul256.vim'
+"" "   Range:   233 (darkest) ~ 239 (lightest)
+"colo seoul256
+"let g:seoul256_background = 233
+"let g:indentLine_char = '┆'
+
+" Press F4 to toggle highlighting on/off, and show current value.
+:noremap <F4> :set hlsearch! hlsearch?<CR>
+
+"The following map uses the above technique so that pressing F8 will highlight
+"all occurrences of the current word:
+:nnoremap <F8> :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
+
+set guioptions+=a
+function! MakePattern(text)
+  let pat = escape(a:text, '\')
+  let pat = substitute(pat, '\_s\+$', '\\s\\*', '')
+  let pat = substitute(pat, '^\_s\+', '\\s\\*', '')
+  let pat = substitute(pat, '\_s\+',  '\\_s\\+', 'g')
+  return '\\V' . escape(pat, '\"')
+endfunction
+vnoremap <silent> <F8> :<C-U>let @/="<C-R>=MakePattern(@*)<CR>"<CR>:set hls<CR>
