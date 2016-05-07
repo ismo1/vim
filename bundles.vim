@@ -128,3 +128,6 @@ Bundle 'Shougo/vimproc'
 Bundle 'Shougo/unite.vim'
 Bundle 'Shougo/unite-outline'
 Bundle 'ujihisa/unite-colorscheme'
+
+"angular2
+Bundle 'magarcia/vim-angular2-snippets'
